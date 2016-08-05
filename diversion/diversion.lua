@@ -335,7 +335,39 @@ end
 
 if upstream then
     ngx.var.backend = upstream
+
+    --添加请求头:upstream对应的应用版本号
+    local upsConfigCache = cache:new(ngx.var.upstream_config)
+
+    local upsVer = upsConfigCache:getUpsVersion(upstream)
+    
+    if not upsVer then
+       --set cache
+      
+      local ok, db = connectdb(red, redisConf)
+      if ok then
+
+        local database = db.redis
+        local version, err =  database:hget("ab:upstream" , upstream )
+
+        if version then
+	    upsConfigCache:setUpsVersion(upstream,version)
+	    upsVer = version
+	    log:debug('set upstream version to cache, upstream:', upstream)
+        end
+      end 
+    end
+   
+
+    -- set version 
+    if upsVer then
+        ngx.req.set_header("gray.version", upsVer)
+    end   
+ 
 end
+
 
 local info = doredirect(desc)
 log:errlog(info)
+
+

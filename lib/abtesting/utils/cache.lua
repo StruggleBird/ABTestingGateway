@@ -123,4 +123,23 @@ _M.setUpstream = function(self, info, upstream)
     cache:set(info, upstream, expire)
 end
 
+
+-- 获取上游版本号
+_M.getUpsVersion = function(self,upstream)
+    local cache = self.cache
+    local ver = cache:get(upstream)
+
+    return ver
+    
+end
+
+-- 设置上游版本号到缓存
+_M.setUpsVersion = function(self,upstream,version)
+    local cache = self.cache
+    local expire = shdict_expire
+    cache:set(upstream,version , expire)
+   
+end
+
+
 return _M

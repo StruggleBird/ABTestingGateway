@@ -20,7 +20,8 @@ _M.divtypes = {
     ["uidappoint"]  = 'uidParser',
     ["arg_city"]    = 'cityParser',
 
-    ["url"]         = 'urlParser'
+    ["url"]         = 'urlParser',
+    ["ugroup"]      = 'ugroupParser'
 }   
 
 _M.prefixConf = {
